@@ -1,0 +1,111 @@
+Published:
+Characterization of Anaplasma marginale subspecies centrale strains using msp1aS genotyping reveals a wildlife reservoir.
+Khumalo ZT, Catanese HN, Liesching N, Hove P, Collins NE, Chaisi ME, Gebremedhin AH, Oosthuizen MC, Brayton KA.
+J Clin Microbiol. 2016 Jul 20. pii: JCM.01029-16.
+
+Repeats:
+	Ac1	:	qpsaqqgasvetstqasvsgdvdsswtalggpsfsapvvdsgiqsss
+	Ac2	:	qpsaqqgasvetstqasvsgdvdsswaalggpsfsapvvdsgiqsss
+	Ac3	:	qpsaqqgagveasaqasvsginsswgalggpsfsapvvgsgiqps
+	Ac4 	:	qpsaqqgtgvetssgqssvstpvsginsswgalggpsfsapvvgsgtqps
+	Ac5	:	qpsaqqgtgveassgqssvstpvsginsswgalggpsfsapvvgsgiqps
+	Ac6	:	qpsaqqgtgvetssgqssvstpvsginsswgalggpsfsapvvgsgiqps
+	Ac7	:	qpgaqqgagvetstqasvsginsswgalggpsfsapvvgsgiqsss
+	Ac8	:	qpgaqqgagvetstqasvsginsswgalggpsfsapvvgsgiqps
+	Ac9	:	qpgaqqgagvetstqasvsginsswgalggpsfsvpvvgsgiqsss
+	Ac10	:	qpsaqqgvgtsgtqasvsvcvdsswgalggpsfsapvvdsgiqps
+	Ac11	:	qpgaqqgagvetstqasvsgidsswgalggpsfsapvvgsgiqsss
+	Ac12	:	qpsaqqgasvetstqasvsggvdsswtalggpsfsapvvdsgiqss
+	Ac13	:	qpsaqqgasvetstqasvsggvdsswtalggpsfsapvvdsdsqss
+	Ac14	:	qpsaqqgasvetstrasvsgdvdsswaalggpsfsapvvdsgiqsss
+	Ac15	:	qpsaqqgasvetstpasvsgdvdsswaafggpsfsapvvdsgiqsss
+	Ac16	:	qpsaqqgasvetstrasvsgdvdsswaafggpsfsapvvdsgiqsss
+	Ac17	:	qpgaqqgtgveasaqasvsginsswgalggpsfsapvvgsgiqsss
+	Ac18	:	qpstqqgtgvetssgqssvstpvsginsswgalggpsfsapvvgsgiqsss
+	Ac19	:	qpsaqqgaggetstqdsvsginsswgalggpsfsapvvgsgiqsss
+	Ac20	:	qpsaqqgvgtsgtqasvsggvgsswgalggpsfsapvvdfgiqsss
+	Ac21	:	qpsaqqgvgtsgtqasvsvcvdsswgalggpsfsapvvdfgiqsss
+	Ac22	:	qpsaqqgasvetstqasvsgdvdsswaalggpsfsapvvdsgiqps
+	Ac23	:	qpgaqqsagvetstqasvsggvdsswgslggasfsapvvgsgiqssg
+	Ac24	:	qpgaqqgtgvetssgqssvstpvsginsswgalggpsfsapvigsgiqssg
+	Ac25	:	qpgaqqgtgvetssgqssvstpvsginsswgalggpsfsapvvgsgiqssg
+	Ac26	:	qpsaqqgasvetstrasvsgdvdsswtalggpsfsapvvdsgiqsss
+	Ac27	:	qpsaqqgasvetstqasvsggvdsswgalggpsfsapvvdsdsqss
+	Ac28	:	qpsaqqcasvetstqasvsgdvdsswaalggpsfsapvvdsgiqsss
+	Ac29	:	qpgaqqgtgvetssgqssvstpvsginsswgalggpsfsapvvgsgiqps
+	Ac30	:	qpgaqqgagvgtstqasvsggvdsswgslggasfsapvvgsgiqssg
+	Ac31	:	qpgaqqgagvetstqasvsginsswgalggpsfsalvvgsgiqsss
+	Ac32	:	qpsaqqgvgtsgtqasvsvgvdsswgalggpsfsapvvdfgiqsss
+	Ac33	:	qpsaqqgtgvetssgqssvstpvsginsswgalggpsfsapvvgsgiqsss
+	Ac34	:	qpgaqqgtgvetstqasvsggvdsswgslggaafsvvgssqvgsqss
+	Ac35	:	qpsaqqgtgvetsaqasvsggvdsswgalggaafsvvgssqvgsqssv
+	Ac36T	:	stpvsginsswgalggpsfsapvvgsgiqps
+	Ac37T	:	qpstpvsginsswgalggpsfsapvvgsgiqps
+	Ac38	:	qpstqqgtgvetstqasvsggvdsswgslggaafsvvgssqvgsqssv
+	Ac39T	:	stpvsginsswgalggpsfsvplvgsgiqssg
+	Ac40T	:	stpvsginsswgalggpsfsapvvgsgiqssg
+	Ac41T	:	stpvsginsswgalggpsfsapvigsgiqssg
+	Ac42	:	qpgaqqsagvetstqasvsggvdsswgslggaafsvvgssqvgsqssv
+	Ac43	:	qpgaqqgtgveasaqasvsginsswgalggpsfsapvvgsgiqps
+	Ac44T	:	stpvsginsswgalggpsfsaplvgsgiqssg
+	Ac45	:	qpgaqqgagvetstqasvsggvdsswgslggaafsvvgssqvgsqssv
+	Ac46T	:	stpvsginsswgalggpsfsapvvgsgiqsss
+	Ac47	:	qpgaqqgagvetstqasvsggvdsswgalggpsfsapvvgsgiqps
+
+Strains:
+	Vaccine	:	Ac1 Ac1 Ac1 Ac2	:	South Africa, Guateng
+	2014	,	CNP986	:	Ac11 Ac8	:	-32.25,24.5
+	2014	,	CNP986	:	Ac9 Ac8	:	-32.25,24.5
+	2014	,	CNP986	:	Ac11 Ac11 Ac11 Ac11 Ac8	:	-32.25,24.5
+	2014	,	CNP987	:	Ac3 Ac4 Ac5 Ac6	:	-32.25,24.5
+	2014	,	CNP979	:	Ac7 Ac8	:	-32.25,24.5
+	2014	,	HiP6	:	Ac1 Ac1 Ac1 Ac2	:	-28.21983,31.95187
+	2014	,	HiP6	:	Ac30 Ac24 Ac25	:	-28.21983,31.95187
+	2014	,	HiP6	:	Ac29 Ac29 Ac29	:	-28.21983,31.95187
+	2014	,	HiP6	:	Ac33 Ac3 Ac6	:	-28.21983,31.95187
+	2014	,	MNP999	:	Ac6 Ac35 Ac36T Ac37T Ac6	:	-29.166667,24.35
+	2014	,	MNP999	:	Ac38 Ac39T Ac34 Ac40T	:	-29.166667,24.35
+	2014	,	MNP1000	:	Ac38 Ac41T Ac42 Ac40T	:	-29.166667,24.35
+	2014	,	MNP1000	:	Ac6 Ac6	:	-29.166667,24.35
+	2014	,	AEP1003	:	Ac1 Ac1 Ac1 Ac2	:	-33.446111,25.745833
+	2014	,	AEP1006	:	Ac7 Ac8	:	-33.446111,25.745833
+	2014	,	AEP1006	:	Ac38 Ac44T Ac43	:	-33.446111,25.745833
+	2014	,	AEP1006	:	Ac31 Ac8	:	-33.446111,25.745833
+	2014	,	KNP586	:	Ac1 Ac1 Ac1 Ac1	:	-24.011389,31.485278
+	2014	,	MNP958	:	Ac26 Ac26 Ac26 Ac2	:	-29.166667,24.35
+	2014	,	WC 107	:	Ac20 Ac32 Ac21 Ac10	:	South Africa, Western Cape
+	2014	,	WC 108	:	Ac1 Ac1 Ac1 Ac2	:	South Africa, Western Cape
+	2014	,	KZN138	:	Ac12 Ac12 Ac13 Ac13 Ac14	:	South Africa, KwaZulu-Natal
+	2014	,	KZN132	:	Ac12 Ac12 Ac13 Ac13 Ac14	:	South Africa, KwaZulu-Natal
+	2014	,	KZN130	:	Ac12 Ac12 Ac13 Ac13 Ac14	:	South Africa, KwaZulu-Natal
+	2014	,	FS56	:	Ac15 Ac16 Ac16 Ac16	:	South Africa, Free State
+	2014	,	FS383	:	Ac16 Ac16 Ac16	:	South Africa, Free State
+	2014	,	Berg10	:	Ac33 Ac3 Ac6	:	-28.733333,29.366667
+	2014	,	Berg10	:	Ac19 Ac19 Ac3 Ac6	:	-28.733333,29.366667
+	2014	,	Berg10	:	Ac17 Ac18 Ac45 Ac46T Ac47	:	-28.733333,29.366667
+	2014	,	Berg12	:	Ac1 Ac1 Ac1 Ac22	:	-28.733333,29.366667
+	2014	,	Berg12	:	Ac20 Ac21 Ac21 Ac20	:	-28.733333,29.366667
+	2014	,	Berg12	:	Ac1 Ac1 Ac1 Ac2	:	-28.733333,29.366667
+	2014	,	Berg19	:	Ac23 Ac24 Ac25 Ac34	:	-28.733333,29.366667
+	2014	,	Berg19	:	Ac26 Ac12 Ac12 Ac27 Ac14	:	-28.733333,29.366667
+	2014	,	Berg19	:	Ac1 Ac1 Ac1 Ac22	:	-28.733333,29.366667
+	2014	,	Berg19	:	Ac19 Ac3 Ac6 Ac6	:	-28.733333,29.366667
+	2014	,	Berg25	:	Ac1 Ac1 Ac1 Ac22	:	-28.733333,29.366667
+	2014	,	Berg25	:	Ac1	:	-28.733333,29.366667
+	2014	,	Berg25	:	Ac1 Ac1 Ac1 Ac2	:	-28.733333,29.366667
+	2014	,	Berg25	:	Ac1 Ac1 Ac1 Ac1	:	-28.733333,29.366667
+	2014	,	Berg25	:	Ac1 Ac1 Ac1 Ac2 Ac2	:	-28.733333,29.366667
+	2014	,	Berg27	:	Ac1 Ac1 Ac1 Ac2	:	-28.733333,29.366667
+	2014	,	Berg27	:	Ac1 Ac1 Ac1 Ac1	:	-28.733333,29.366667
+	2014	,	Berg27	:	Ac1 Ac1 Ac1 Ac2 Ac2	:	-28.733333,29.366667
+	2014	,	Berg17	:	Ac1 Ac1 Ac1 Ac2	:	-28.733333,29.366667
+	2014	,	Berg24	:	Ac1 Ac1 Ac1 Ac2	:	-28.733333,29.366667
+	2014	,	Berg24	:	Ac1 Ac1 Ac1 Ac2 Ac2	:	-28.733333,29.366667
+	2014	,	Berg24	:	Ac1 Ac28 Ac2 Ac28	:	-28.733333,29.366667
+	2014	,	Berg30	:	Ac1 Ac1 Ac1 Ac2	:	-28.733333,29.366667
+	2014	,	Berg30	:	Ac1 Ac1 Ac1 Ac2 Ac2	:	-28.733333,29.366667
+	2014	,	Berg20	:	Ac1 Ac1 Ac1 Ac1	:	-28.733333,29.366667
+
+
+
+

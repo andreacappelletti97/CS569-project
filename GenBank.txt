@@ -1,0 +1,4 @@
+Name: GenBank
+Repeats:
+	Ac1 : 
+Strains:
