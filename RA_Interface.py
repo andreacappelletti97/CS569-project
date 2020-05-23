@@ -154,11 +154,11 @@ def matchProtein(species,input):
 		#	res+=name+", with "+error+" errors: "+seq
 			
 			
-	#print(res)	
-	#process=multiprocessing.Process(target=popupWindow, args=("Amino Acid Match", res))
-	#process.daemon = True
-	#process.start()
-	#popupWindow("Amino Acid Match", res)
+	print(res)	
+	process=multiprocessing.Process(target=popupWindow, args=("Amino Acid Match", res))
+	process.daemon = True
+	process.start()
+	popupWindow("Amino Acid Match", res)
 	
 	return
 

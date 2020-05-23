@@ -22,6 +22,8 @@ from __future__ import unicode_literals
 from RA_Interface import *
 from matplotlib import pyplot as plt
 import pprint
+import os
+import subprocess
 
 
 #from jellyfish import levenshtein_distance
@@ -99,7 +101,7 @@ def menuloop(speciesList,currentSpecies):
 			print "11: Update Geocodings"
 
 			print "0: Exit Program" 
-		
+
 			try:
 				command=int(raw_input("Please enter the number of the option you want: "))
 			except ValueError:

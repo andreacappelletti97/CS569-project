@@ -5,52 +5,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <vector>
+#include <fstream>
 
-#define DIM 10         //numero di coppie
-#define maxseq 1024    //dimensione array seq
-#define maxstring 4096 //dimensione array string
-#define piDIM 1025
 
-//Test function
-bool check(std::string v1, std::string v2, int occ)
-{
 
-  std::vector<int> test_occ(v1.size(), 0);
+#define DIM 1         //numero di coppie
+#define maxseq 4    //dimensione array seq
+#define maxstring 12 //dimensione array string
+#define piDIM 5
 
-  unsigned int idx = 0;
 
-  test_occ[0] = -1; //AGGIUNTA
-
-  for (unsigned int i = 0; i < v1.size(); i++)
-  {
-    bool tmp = true;
-    for (unsigned int j = 0; j < v2.size(); j++)
-    {
-      if (v1[i + j] != v2[j] || (i + j) > v1.size())
-      {
-        tmp = false;
-        break;
-      }
-    }
-    if (tmp)
-    {
-      test_occ[idx] = i;
-      idx++;
-    }
-  }
-
-  bool test = true;
-
-  if (test_occ[0] != occ)
-    test = false;
-
-  // std::cout<<test_occ[0]<<std::endl;
-
-  // if (test_occ[0]==-1) //AGGIUNTA
-  // 	std::cout<<"NO MATCH"<<std::endl;
-
-  return test;
-}
 
 double run_krnl(cl::Context &context,
                 cl::CommandQueue &q,
@@ -67,6 +31,9 @@ double run_krnl(cl::Context &context,
   // These commands will allocate memory on the FPGA. The cl::Buffer objects can
   // be used to reference the memory locations on the device.
   //Creating Buffers
+
+  
+
 
   std::cout << "RUN KERNEL ENTER" << std::endl;
 
@@ -137,7 +104,7 @@ double run_krnl(cl::Context &context,
   // Copy input data to Device Global Memory from HOST to board
   OCL_CHECK(err,
             err = q.enqueueMigrateMemObjects({buffer_occ, buffer_stringdim, buffer_seqdim, buffer_string, buffer_seq, buffer_pi},
-                                             0 /* 0 means from host*/));
+                                             0  /*0 means from host*/));
 
   std::cout << "INPUT DATA COPIED" << std::endl;
 
@@ -164,13 +131,43 @@ double run_krnl(cl::Context &context,
   return kernel_time.count();
 }
 
-char random_char()
+
+
+//Function to read input string and pattern
+void getInputString(std::vector<char, aligned_allocator<char>> &string, int type)
 {
-  char alphabet[4] = {'A', 'C', 'G', 'T'};
-  return alphabet[rand() % 4];
+  std::ifstream inputFile;
+  if (type == 0)
+  {
+
+    inputFile.open("proteine.txt");
+  }
+  else
+  {
+
+    inputFile.open("pattern.txt");
+  }
+
+  while (!inputFile.eof())
+  {
+    char c;
+    inputFile >> c;
+    string.push_back(c);
+  }
+  string.pop_back();
 }
 
-void failure_function(char *seq, int *seqdim, int *pi)
+//Function to print vector content
+void printVectorContent(std::vector<char, aligned_allocator<char>> &repeat)
+{
+  for (unsigned int i = 0; i < repeat.size(); i++)
+  {
+    std::cout << i << " " << repeat[i] << std::endl;
+  }
+}
+
+
+void failure_function(std::vector<char, aligned_allocator<char>> &seq, std::vector<int, aligned_allocator<int>> &seqdim, int *pi)
 {
 
   int seq_count = 0; //scorre le sequenze
@@ -199,19 +196,7 @@ void failure_function(char *seq, int *seqdim, int *pi)
   }
 }
 
-//numero random per definire la lunghezza della sequenza casualmente
-int random_intsm()
-{
-  int number[7] = {3, 4, 5, 6, 7, 8, 9};
-  return number[rand() % 7];
-}
 
-//numero random per definire la lunghezza della stringa casualmente
-int random_intlg()
-{
-  int number[7] = {29, 35, 28, 30, 31, 33, 34};
-  return number[rand() % 7];
-}
 
 int main(int argc, char **argv)
 {
@@ -264,60 +249,34 @@ int main(int argc, char **argv)
     exit(EXIT_FAILURE);
   }
 
-  //Input
-  char string[maxstring];
-  char seq[maxseq];
-  int seqdim[DIM];
-  int stringdim[DIM];
-  int pi[piDIM * DIM];
-  //srand((unsigned)time(NULL));
-
-  for (unsigned int i = 0; i < maxstring; i++)
-    string[i] = random_char();
-  for (unsigned int i = 0; i < maxseq; i++)
-    seq[i] = random_char();
-
-  //assegno ai due array di dimensione dei numeri casuali
-  for (unsigned int i = 0; i < DIM; i++)
-    seqdim[i] = random_intsm();
-
-  for (unsigned int i = 0; i < DIM; i++)
-    stringdim[i] = random_intlg();
-
-  failure_function(seq, seqdim, pi);
-
-  std::vector<int, aligned_allocator<int>> vOcc(DIM);
+  std::vector<char, aligned_allocator<char>> string;
+  std::vector<char, aligned_allocator<char>> pattern;
   std::vector<int, aligned_allocator<int>> vStringdim(DIM);
   std::vector<int, aligned_allocator<int>> vSeqdim(DIM);
-  std::vector<char, aligned_allocator<char>> vSeq(maxseq);
-  std::vector<char, aligned_allocator<char>> vString(maxstring);
+  std::vector<int, aligned_allocator<int>> vOcc(50);
   std::vector<int, aligned_allocator<int>> vPi(piDIM * DIM);
+  int pi[piDIM * DIM];
 
-  //Vector setup for Bundles
+  //Set static dimension to try
+  vSeqdim.push_back(4);
+  vStringdim.push_back(12);
 
-  for (int i = 0; i < DIM; i++)
-  {
-    vOcc[i] = -1;
-    vStringdim[i] = stringdim[i];
-    vSeqdim[i] = seqdim[i];
-  }
 
-  for (int i = 0; i < maxseq; i++)
-  {
-    vSeq[i] = seq[i];
-  }
+  //Read input string
+  getInputString(string, 0);
+  printVectorContent(string);
+  //Read pattern to search into the string
+  getInputString(pattern, 1);
+  printVectorContent(pattern);
+//Compute failure function
+failure_function(pattern, vSeqdim, pi); 
 
-  for (int i = 0; i < maxstring; i++)
-  {
-    vString[i] = string[i];
-  }
-
-  for (int i = 0; i < piDIM * DIM; i++)
+for (int i = 0; i < piDIM * DIM; i++)
   {
     vPi[i] = pi[i];
   }
 
-  //Call run kernel function
+ //Call run kernel function
   double kernel_time_in_sec = 0;
 
   kernel_time_in_sec = run_krnl(context,
@@ -325,52 +284,17 @@ int main(int argc, char **argv)
                                 kernel,
                                 vStringdim,
                                 vSeqdim,
-                                vString,
-                                vSeq,
+                                string,
+                                pattern,
                                 vPi,
                                 vOcc);
 
   std::cout << "Total time in seconds: " << kernel_time_in_sec << std::endl;
 
-  //Starting test function
 
-  std::string str;
-  std::string sq;
-  int a = 0;
-  int b = 0;
-  bool test = true;
-  for (unsigned int i = 0; i < DIM; i++)
+for (unsigned int i = 0; i < vOcc.size(); i++)
   {
-
-    for (int j = 0; j < stringdim[i]; j++)
-      str.push_back(string[b + j]);
-    for (int j = 0; j < seqdim[i]; j++)
-      sq.push_back(seq[a + j]);
-    /*
-        std::cout << std::endl;
-        std::cout << str << std::endl;
-        std::cout << sq << std::endl;
-        std::cout << vOcc[i];
-
-        std::cout << std::endl;
-*/
-
-    std::string v1 = std::string(str);
-    std::string v2 = std::string(sq);
-
-    test &= check(v1, v2, vOcc[i]);
-
-    //str.clear();
-    //sq.clear();
-    str = "";
-    sq = "";
-
-    a = a + seqdim[i];
-    b = b + stringdim[i];
+    std::cout << i << " " << vOcc[i] << std::endl;
   }
 
-  if (test)
-    std::cout << "ALL RESULTS CORRECT" << std::endl;
-  else
-    std::cout << "TEST FAILED" << std::endl;
 }

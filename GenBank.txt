@@ -1,4 +1,2 @@
-Name: GenBank
 Repeats:
-	Ac1 : 
-Strains:
+	Ac1 : ACGT

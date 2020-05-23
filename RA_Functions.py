@@ -19,6 +19,8 @@
 
 from RA_DataStructures import *
 import time
+import os
+import subprocess
 
 def importdata():
 	print "Importing Data..."
@@ -594,8 +596,8 @@ def createRepeatMatrix(species):
 # be used in a for-loop.  The naive match shown first requires the text
 # to be a list or string as well.
 def kmpAllMatches(pattern, text):
-        #print("pattern: " + pattern)
-        #print("text: " + text)
+	print("pattern: " + pattern)
+	print("text: " + text)
 	shift = computeShifts(pattern)
 	startPos = 0
 	matchLen = 0
@@ -614,7 +616,7 @@ def kmpAllMatches(pattern, text):
 
 def computeShifts(pattern):
         start = time.time()
-        print("computing shift...")
+        #print("computing shift...")
 	shifts = [None] * (len(pattern) + 1)
 	shift = 1
 	for pos in range(len(pattern) + 1):
@@ -622,8 +624,11 @@ def computeShifts(pattern):
 			shift += shifts[pos-shift-1]
 		shifts[pos] = shift
 	end = time.time()
-	print("timer total time shiftssss")
-	print(end - start)	
+	#print("timer total time shiftssss")
+	#print(end - start)	
+	print(pattern)
+	print("shiftsSSSSS")
+	print(shifts)
 	return shifts
 ###### END		
 
