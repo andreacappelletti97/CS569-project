@@ -1,0 +1,2 @@
+Repeats:
+	Ac1 : ACGT

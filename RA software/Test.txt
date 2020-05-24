@@ -1,0 +1,14 @@
+Name: Test
+Repeats:
+	Ac1 : qpsaqqgasvetstqasvsgdvdsswtalggpsfsapvvdsgiqsssqpsaqqgasvetstqasvsgdvdsswtalggpsfsapvvdsgiqsssqpsaqqgasvetstqasvsgdvdsswtalggpsfsapvvdsgiqsssqpsaqqgasvetstqasvsgdvdsswtalggpsfsapvvdsgiqsss
+	Ac2 : qpsaqqgasvetstqasvsgdvdsswaalggpsfsapvvdsgiqsss
+	Ac3 : qpsaqqgagveasaqasvsginsswgalggpsfsapvvgsgiqps
+Strains:
+Published:
+Characterization of Anaplasma marginale subspecies centrale strains using msp1aS genotyping reveals a wildlife reservoir.
+Khumalo ZT, Catanese HN, Liesching N, Hove P, Collins NE, Chaisi ME, Gebremedhin AH, Oosthuizen MC, Brayton KA.
+Repeats:
+	Ac1
+	Ac2
+	Ac3
+Strains:

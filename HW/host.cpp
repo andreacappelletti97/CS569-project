@@ -8,11 +8,10 @@
 #include <fstream>
 
 
-
 #define DIM 1         //numero di coppie
-#define maxseq 4    //dimensione array seq
-#define maxstring 12 //dimensione array string
-#define piDIM 5
+#define maxseq 3    //dimensione array seq
+#define maxstring 145390 //dimensione array string
+#define piDIM 4
 
 
 
@@ -170,11 +169,13 @@ void printVectorContent(std::vector<char, aligned_allocator<char>> &repeat)
 void failure_function(std::vector<char, aligned_allocator<char>> &seq, std::vector<int, aligned_allocator<int>> &seqdim, int *pi)
 {
 
+for(unsigned int n =0; n <DIM; n++){
+
+
   int seq_count = 0; //scorre le sequenze
   int pi_count = 0;  //scorre pi
 
-  for (int n = 0; n < DIM; n++)
-  {
+ 
     pi[pi_count] = -1;    //first element always equal to -1
     pi[pi_count + 1] = 0; //second element always equal to 0
 
@@ -253,18 +254,18 @@ int main(int argc, char **argv)
   std::vector<char, aligned_allocator<char>> pattern;
   std::vector<int, aligned_allocator<int>> vStringdim(DIM);
   std::vector<int, aligned_allocator<int>> vSeqdim(DIM);
-  std::vector<int, aligned_allocator<int>> vOcc(50);
+  std::vector<int, aligned_allocator<int>> vOcc(DIM);
   std::vector<int, aligned_allocator<int>> vPi(piDIM * DIM);
   int pi[piDIM * DIM];
 
   //Set static dimension to try
-  vSeqdim.push_back(4);
-  vStringdim.push_back(12);
+  vSeqdim[0] = 3;
+  vStringdim[0] = 145390;
 
 
   //Read input string
   getInputString(string, 0);
-  printVectorContent(string);
+  //printVectorContent(string);
   //Read pattern to search into the string
   getInputString(pattern, 1);
   printVectorContent(pattern);
@@ -274,7 +275,18 @@ failure_function(pattern, vSeqdim, pi);
 for (int i = 0; i < piDIM * DIM; i++)
   {
     vPi[i] = pi[i];
+
   }
+
+for (int i = 0; i < piDIM * DIM; i++)
+  {
+    vOcc[i] = -1;
+  }
+
+
+
+
+
 
  //Call run kernel function
   double kernel_time_in_sec = 0;
@@ -292,9 +304,6 @@ for (int i = 0; i < piDIM * DIM; i++)
   std::cout << "Total time in seconds: " << kernel_time_in_sec << std::endl;
 
 
-for (unsigned int i = 0; i < vOcc.size(); i++)
-  {
-    std::cout << i << " " << vOcc[i] << std::endl;
-  }
+
 
 }

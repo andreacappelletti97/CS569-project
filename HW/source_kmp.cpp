@@ -1,10 +1,12 @@
 #include <string>
 #include <vector>
 
-#define DIM 10		   //numero di coppie
-#define maxseq 1024	   //dimensione array seq
-#define maxstring 4096 //dimensione array string
-#define pidim 1025	   //dimensione pi (failure function)
+
+#define DIM 1         //numero di coppie
+#define maxseq 3    //dimensione array seq
+#define maxstring 145390 //dimensione array string
+#define pidim 4
+
 
 #include <iostream>
 extern "C"
@@ -40,10 +42,12 @@ extern "C"
 
 		std::cout << "SOURCE KMP" << std::endl;
 
+
 		for (int i = 0; i < pidim * DIM; i++)
 		{
 #pragma HLS pipeline
 			pi_local[i] = pi[i];
+
 		}
 
 		for (int i = 0; i < DIM; i++)
@@ -54,16 +58,23 @@ extern "C"
 			seqdim_local[i] = seqdim[i];
 		}
 
+
+
 		for (int i = 0; i < maxstring; i++)
 		{
 #pragma HLS pipeline
 			string_local[i] = string[i];
+
+
 		}
+
 
 		for (int i = 0; i < maxseq; i++)
 		{
 #pragma HLS pipeline
 			seq_local[i] = seq[i];
+
+
 		}
 
 		unsigned int i = 0;
@@ -79,7 +90,7 @@ extern "C"
 		{
 
 		matching:
-			for (k = 0; k < maxseq; k++)
+			for (k = 0; k < maxstring; k++)
 			{
 
 #pragma HLS pipeline
@@ -106,7 +117,7 @@ extern "C"
 
 						if (j == seqdim_local[n])
 						{
-
+							std::cout<<"ENTRO E AGGIORNO!!!!";
 							occ_local[n] = i;
 							a = a + seqdim_local[n];
 							b = b + stringdim_local[n];
@@ -159,10 +170,12 @@ extern "C"
 			}
 		}
 
+std::cout<<"occ inside kernel"<<std::endl;
 		for (int i = 0; i < DIM; i++)
 		{
 #pragma HLS pipeline
 			occ[i] = occ_local[i];
+			std::cout<<occ[i];
 		}
 	}
 }
