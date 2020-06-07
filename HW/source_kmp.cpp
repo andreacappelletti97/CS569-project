@@ -1,12 +1,10 @@
 #include <string>
 #include <vector>
 
-
-#define DIM 1         //numero di coppie
-#define maxseq 3    //dimensione array seq
-#define maxstring 145390 //dimensione array string
-#define pidim 4
-
+#define DIM 200			  //numero di coppie
+#define maxseq 204800	  //dimensione array seq
+#define maxstring 1638400 //dimensione array string
+#define PI maxseq + DIM
 
 #include <iostream>
 extern "C"
@@ -38,16 +36,14 @@ extern "C"
 
 		int seqdim_local[DIM];
 		int stringdim_local[DIM];
-		int pi_local[pidim * DIM];
+		int pi_local[PI];
 
 		std::cout << "SOURCE KMP" << std::endl;
 
-
-		for (int i = 0; i < pidim * DIM; i++)
+		for (int i = 0; i < PI; i++)
 		{
 #pragma HLS pipeline
 			pi_local[i] = pi[i];
-
 		}
 
 		for (int i = 0; i < DIM; i++)
@@ -58,23 +54,16 @@ extern "C"
 			seqdim_local[i] = seqdim[i];
 		}
 
-
-
 		for (int i = 0; i < maxstring; i++)
 		{
 #pragma HLS pipeline
 			string_local[i] = string[i];
-
-
 		}
-
 
 		for (int i = 0; i < maxseq; i++)
 		{
 #pragma HLS pipeline
 			seq_local[i] = seq[i];
-
-
 		}
 
 		unsigned int i = 0;
@@ -90,15 +79,15 @@ extern "C"
 		{
 
 		matching:
-			for (k = 0; k < maxstring; k++)
+			for (k = 0; k < (maxstring + maxseq); k++)
 			{
 
 #pragma HLS pipeline
 
-				if (j < seqdim_local[n])
+				if (j <= seqdim_local[n])
 				{
-
-					if (i > (stringdim_local[n] - seqdim_local[n]))
+						//Go on searching - seqdim_local[n]
+					if (i >= (stringdim_local[n] ))
 					{
 
 						a = a + seqdim_local[n];
@@ -112,12 +101,11 @@ extern "C"
 
 					if (string_local[b + i + j] == seq_local[a + j])
 					{
-
 						j++;
 
 						if (j == seqdim_local[n])
 						{
-							std::cout<<"ENTRO E AGGIORNO!!!!";
+
 							occ_local[n] = i;
 							a = a + seqdim_local[n];
 							b = b + stringdim_local[n];
@@ -170,12 +158,16 @@ extern "C"
 			}
 		}
 
-std::cout<<"occ inside kernel"<<std::endl;
 		for (int i = 0; i < DIM; i++)
 		{
 #pragma HLS pipeline
 			occ[i] = occ_local[i];
-			std::cout<<occ[i];
+		}
+
+		std::cout << "OCC FINAL" << std::endl;
+		for (int i = 0; i < DIM; i++)
+		{
+			std::cout << i << " " << occ_local[i] << std::endl;
 		}
 	}
 }

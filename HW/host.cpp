@@ -5,13 +5,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <vector>
-#include <fstream>
 #include <string>
 
-#define DIM 1            //numero di coppie
-#define maxseq 3         //dimensione array seq
-#define maxstring 145390 //dimensione array string
-#define piDIM 4
+#define DIM 200           //numero di coppie
+#define maxseq 204800     //dimensione array seq
+#define maxstring 1638400 //dimensione array string
+#define PI maxseq + DIM
+
+
 
 double run_krnl(cl::Context &context,
                 cl::CommandQueue &q,
@@ -33,7 +34,6 @@ double run_krnl(cl::Context &context,
 
     OCL_CHECK(err,
               cl::Buffer buffer_stringdim(context,
-
                                           CL_MEM_USE_HOST_PTR |
                                               CL_MEM_READ_ONLY,
                                           sizeof(int) * DIM,
@@ -41,7 +41,6 @@ double run_krnl(cl::Context &context,
                                           &err));
     OCL_CHECK(err,
               cl::Buffer buffer_seqdim(context,
-
                                        CL_MEM_USE_HOST_PTR |
                                            CL_MEM_READ_ONLY,
                                        sizeof(int) * DIM,
@@ -50,7 +49,6 @@ double run_krnl(cl::Context &context,
 
     OCL_CHECK(err,
               cl::Buffer buffer_string(context,
-
                                        CL_MEM_USE_HOST_PTR |
                                            CL_MEM_READ_ONLY,
                                        sizeof(char) * maxstring,
@@ -59,7 +57,6 @@ double run_krnl(cl::Context &context,
 
     OCL_CHECK(err,
               cl::Buffer buffer_seq(context,
-
                                     CL_MEM_USE_HOST_PTR |
                                         CL_MEM_READ_ONLY,
                                     sizeof(char) * maxseq,
@@ -67,16 +64,14 @@ double run_krnl(cl::Context &context,
                                     &err));
     OCL_CHECK(err,
               cl::Buffer buffer_pi(context,
-
                                    CL_MEM_USE_HOST_PTR |
                                        CL_MEM_READ_ONLY,
-                                   sizeof(int) * piDIM * DIM,
+                                   sizeof(int) * PI,
                                    vPi.data(),
                                    &err));
 
     OCL_CHECK(err,
               cl::Buffer buffer_occ(context,
-
                                     CL_MEM_USE_HOST_PTR |
                                         CL_MEM_WRITE_ONLY,
                                     sizeof(int) * DIM,
@@ -85,12 +80,11 @@ double run_krnl(cl::Context &context,
 
     //Setting the kernel Arguments
 
-    OCL_CHECK(err, err = kernel.setArg(0, buffer_occ));
+    OCL_CHECK(err, err = (kernel).setArg(0, buffer_occ));
     OCL_CHECK(err, err = (kernel).setArg(1, buffer_stringdim));
     OCL_CHECK(err, err = (kernel).setArg(2, buffer_seqdim));
     OCL_CHECK(err, err = (kernel).setArg(3, buffer_seq));
     OCL_CHECK(err, err = (kernel).setArg(4, buffer_string));
-
     OCL_CHECK(err, err = (kernel).setArg(5, buffer_pi));
 
     std::cout << "ARG SETUP DONE" << std::endl;
@@ -98,7 +92,7 @@ double run_krnl(cl::Context &context,
     // Copy input data to Device Global Memory from HOST to board
     OCL_CHECK(err,
               err = q.enqueueMigrateMemObjects({buffer_occ, buffer_stringdim, buffer_seqdim, buffer_string, buffer_seq, buffer_pi},
-                                               0 /*0 means from host*/));
+                                               0 /* 0 means from host*/));
 
     std::cout << "INPUT DATA COPIED" << std::endl;
 
@@ -125,116 +119,17 @@ double run_krnl(cl::Context &context,
     return kernel_time.count();
 }
 
-//Function to read input string and pattern
-void getPattern(std::vector<char, aligned_allocator<char>> &pattern, std::vector<int, aligned_allocator<int>> &vSeqdim)
+
+//Function to compute the failure function of the KMP algorithm
+void failure_function(std::vector<char, aligned_allocator<char>> &seq, std::vector<int, aligned_allocator<int>> &seqdim, std::vector<int, aligned_allocator<int>> &pi)
 {
 
-    std::cout << std::endl;
-    bool firstRead = true;
-    std::string line;
-    std::string pat;
-    std::ifstream inputFile;
-    inputFile.open("pattern.txt");
-    while (getline(inputFile, line))
+    int seq_count = 0; //scorre le sequenze
+    int pi_count = 0;  //scorre pi
+
+    //For each couple computer PI
+    for (int n = 0; n < DIM; n++)
     {
-        std::cout << "line " << line << std::endl;
-        //New sequence is starting
-        if (line.substr(0, 2) == "SQ" && isdigit(line[2]) && line[3] == ':')
-        {
-            //First read
-            if (firstRead)
-            {
-                std::cout << "fist read" << std::endl;
-                pat += line;
-                firstRead = false;
-            }
-            //Push the new sequence into the array
-            else
-            {
-                std::cout << "new sq" << std::endl;
-
-                for (unsigned int i = 4; i < pat.size(); i++)
-                {
-                    pattern.push_back(pat[i]);
-                }
-                std::cout << "dim update" << std::endl;
-                vSeqdim.push_back(pat.size() - 4);
-
-                pat = line;
-            }
-        }
-        else if (line.substr(0, 3) == "END")
-        {
-            for (unsigned int i = 4; i < pat.size(); i++)
-            {
-                pattern.push_back(pat[i]);
-            }
-            std::cout << "dim update" << std::endl;
-            vSeqdim.push_back(pat.size() - 4);
-            std::cout << "end" << std::endl;
-            break;
-        }
-
-        else
-        {
-            std::cout << "always pat" << std::endl;
-            pat += line;
-        }
-    }
-
-    vSeqdim.erase(vSeqdim.begin());
-
-    for (unsigned int i = 0; i < pattern.size(); i++)
-    {
-        std::cout << pattern[i];
-    }
-    std::cout << std::endl;
-
-    for (unsigned int i = 0; i < vSeqdim.size(); i++)
-    {
-        std::cout << vSeqdim[i];
-    }
-    std::cout << std::endl;
-}
-
-//Function to read input string and pattern
-void getString(std::vector<char, aligned_allocator<char>> &string)
-{
-    std::ifstream inputFile;
-
-    inputFile.open("proteine.txt");
-
-    while (!inputFile.eof())
-    {
-        char c;
-        inputFile >> c;
-        string.push_back(c);
-    }
-    string.pop_back();
-}
-
-void writeOutput(std::vector<int, aligned_allocator<int>> &occ)
-{
-}
-
-//Function to print vector content
-void printVectorContent(std::vector<char, aligned_allocator<char>> &repeat)
-{
-    for (unsigned int i = 0; i < repeat.size(); i++)
-    {
-        std::cout << i << " " << repeat[i] << std::endl;
-    }
-}
-
-void failure_function(std::vector<char, aligned_allocator<char>> &seq, std::vector<int, aligned_allocator<int>> &seqdim, int *pi)
-{
-
-    for (unsigned int n = 0; n < DIM; n++)
-    {
-
-        int seq_count = 0; //scorre le sequenze
-        int pi_count = 0;  //scorre pi
-
         pi[pi_count] = -1;    //first element always equal to -1
         pi[pi_count + 1] = 0; //second element always equal to 0
 
@@ -255,6 +150,148 @@ void failure_function(std::vector<char, aligned_allocator<char>> &seq, std::vect
         seq_count = seq_count + seqdim[n];
     }
 }
+
+
+
+//Utility Function to print vector content
+void printVectorContent(std::vector<char, aligned_allocator<char>> &string)
+{
+    for (unsigned int i = 0; i < string.size(); i++)
+    {
+        std::cout << i << " " << string[i] << std::endl;
+    }
+}
+
+
+
+//Function to read input seq and automatically set seq dimension for Repeat Analyzer
+void getPattern(std::vector<char, aligned_allocator<char>> &seq, std::vector<int, aligned_allocator<int>> &seqdim, bool pattern)
+{
+
+    bool firstRead = true;
+    std::string line;
+    std::string pat;
+    std::ifstream inputFile;
+    //Input file for sequences
+    if (pattern)
+    {
+        inputFile.open("pattern.txt");
+    }
+    else
+    {
+        inputFile.open("proteine.txt");
+    }
+    while (getline(inputFile, line))
+    {
+        //New sequence is starting
+        if (line.substr(0, 2) == "SQ" && isdigit(line[2]) && line[3] == ':')
+        {
+            //First read
+            if (firstRead)
+            {
+                pat = line;
+                firstRead = false;
+            }
+            //If it's not the first read push the new sequence into the array
+            else
+            {
+                for (unsigned int i = 4; i < pat.size(); i++)
+                {
+                    seq.push_back(pat[i]);
+                }
+                //Update the dimension with the size of the sequence in input
+                seqdim.push_back(pat.size() - 4);
+                pat = line;
+            }
+        } //End of the file
+        else if (line.substr(0, 3) == "END")
+        {
+
+            for (unsigned int i = 4; i < pat.size(); i++)
+            {
+                seq.push_back(pat[i]);
+            }
+            seqdim.push_back(pat.size() - 4);
+            break;
+        }
+
+        else
+        {
+            pat += line;
+        }
+    }
+}
+
+
+//Function to read fasta file format and automatically set dimension of seq and string
+void readFastaInput(std::vector<char, aligned_allocator<char>> &seq, std::vector<int, aligned_allocator<int>> &seqdim, bool isString)
+{
+    std::ifstream input;
+    if (isString)
+    {
+        input.open("string.fasta");
+    }
+    else
+    {
+        input.open("pattern.fasta");
+    }
+
+    std::string line, id, DNA_sequence;
+
+    while (std::getline(input, line))
+    {
+        //std::cout << line << std::endl;
+
+        // line may be empty so you *must* ignore blank lines
+        // or you have a crash waiting to happen with line[0]
+        if (line.empty())
+            continue;
+
+        if (line[0] == '>')
+        {
+            // output previous line before overwriting id
+            // but ONLY if id actually contains something
+            if (!id.empty())
+            {
+                for (int i = 0; i < DNA_sequence.size(); i++)
+                {
+                    seq.push_back(DNA_sequence[i]);
+                }
+                seqdim.push_back(DNA_sequence.size());
+                //std::cout << "DNA SIZE: " << DNA_sequence.size() << std::endl;
+            }
+
+            //seqdim.push_back(DNA_sequence.size());
+            id = line.substr(1);
+            DNA_sequence.clear();
+        }
+        else
+        { //  if (line[0] != '>'){ // not needed because implicit
+            DNA_sequence += line;
+        }
+    }
+    for (int i = 0; i < DNA_sequence.size(); i++)
+    {
+        seq.push_back(DNA_sequence[i]);
+    }
+    seqdim.push_back(DNA_sequence.size());
+    /*
+  std::cout << "PRINT SEQ " << std::endl;
+  for (int i = 0; i < seq.size(); i++)
+  {
+    std::cout << seq[i];
+  } 
+
+  std::cout << std::endl;
+  std::cout << "PRINT SEQDIM " << std::endl;
+  for (int i = 0; i < seqdim.size(); i++)
+  {
+    std::cout << i << " " << seqdim[i] << std::endl;
+  }
+  */
+}
+
+
 
 int main(int argc, char **argv)
 {
@@ -307,49 +344,165 @@ int main(int argc, char **argv)
         exit(EXIT_FAILURE);
     }
 
+
+    //Declare input vector
+    std::vector<int, aligned_allocator<int>> occ(DIM);
+    std::vector<int, aligned_allocator<int>> stringdim;
+    std::vector<int, aligned_allocator<int>> seqdim;
+    std::vector<char, aligned_allocator<char>> seq;
     std::vector<char, aligned_allocator<char>> string;
-    std::vector<char, aligned_allocator<char>> pattern;
-    std::vector<int, aligned_allocator<int>> vStringdim(DIM);
-    std::vector<int, aligned_allocator<int>> vSeqdim(DIM);
-    std::vector<int, aligned_allocator<int>> vOcc(DIM);
-    std::vector<int, aligned_allocator<int>> vPi(piDIM * DIM);
-    int pi[piDIM * DIM];
+    std::vector<int, aligned_allocator<int>> pi(7000 + DIM);
 
-    //Set static dimension to try
-
-    vStringdim[0] = 145390;
-
-    //Read input string
-    getString(string);
+   
 
     //Read pattern to search into the string
-    getPattern(pattern, vSeqdim);
+    //getPattern(seq, seqdim, true);
+    //getPattern(string, stringdim, false);
 
-    //Compute failure function
-    failure_function(pattern, vSeqdim, pi);
+    readFastaInput(string, stringdim, true);
+    readFastaInput(seq, seqdim, false);
 
-    for (int i = 0; i < piDIM * DIM; i++)
+    //Set dimension for 200 couples seq and string
+    int stringDIMK = 4939;
+    int seqDIMK = 35;
+    std::vector<int, aligned_allocator<int>> stringdimDiv;
+    std::vector<int, aligned_allocator<int>> seqdimDiv;
+
+    for (int i = 0; i < DIM; i++)
     {
-        vPi[i] = pi[i];
+        stringdimDiv.push_back(stringDIMK);
     }
 
-    for (int i = 0; i < piDIM * DIM; i++)
+    for (int i = 0; i < DIM; i++)
     {
-        vOcc[i] = -1;
+        seqdimDiv.push_back(seqDIMK);
     }
 
-    //Call run kernel function
+    int stringIndexLower = 0;
+    int stringIndexUpper = 4939 * DIM;
+    int seqIndexLower = 0;
+    int seqIndexUpper = 35 * DIM;
+
+    int countString = 0;
+    int countSeq = 0;
+
     double kernel_time_in_sec = 0;
 
-    kernel_time_in_sec = run_krnl(context,
-                                  q,
-                                  kernel,
-                                  vStringdim,
-                                  vSeqdim,
-                                  string,
-                                  pattern,
-                                  vPi,
-                                  vOcc);
+    for (int j = 0; j < 5; j++)
+    {
+
+        //Set all occorences of the output vector to -1 index
+        for (int i = 0; i < DIM; i++)
+        {
+            occ[i] = -1;
+        }
+
+        std::cout << "FOR CICLE NUMBER: " << j << std::endl;
+
+        countString = 0;
+        countSeq = 0;
+
+        std::vector<char, aligned_allocator<char>> stringDiv(4939 * DIM);
+        std::vector<char, aligned_allocator<char>> seqDiv(35 * DIM);
+
+        for (size_t i = stringIndexLower; i < stringIndexUpper; i++)
+        {
+            stringDiv[countString] = string[i];
+            countString++;
+        }
+
+        for (size_t i = seqIndexLower; i < seqIndexUpper; i++)
+        {
+            seqDiv[countSeq] = seq[i];
+            countSeq++;
+        }
+
+        failure_function(seqDiv, seqdimDiv, pi);
+
+        kernel_time_in_sec += run_krnl(context,
+                                       q,
+                                       kernel,
+                                       stringdimDiv,
+                                       seqdimDiv,
+                                       stringDiv,
+                                       seqDiv,
+                                       pi,
+                                       occ);
+
+        stringIndexLower = stringIndexUpper;
+        stringIndexUpper = stringIndexLower + 4939 * DIM;
+        seqIndexLower = seqIndexUpper;
+        seqIndexUpper = seqIndexLower + 35 * DIM;
+    }
 
     std::cout << "Total time in seconds: " << kernel_time_in_sec << std::endl;
+
+    //Compute failure function
+    //failure_function(seq, seqdim, pi);
+
+    /*
+
+  //Set all occorences of the output vector to -1 index
+  for (int i = 0; i < DIM; i++)
+  {
+    occ[i] = -1;
+  }
+
+  //Call run kernel function
+  double kernel_time_in_sec = 0;
+
+  kernel_time_in_sec = run_krnl(context,
+                                q,
+                                kernel,
+                                stringdim,
+                                seqdim,
+                                string,
+                                seq,
+                                pi,
+                                occ);
+
+  std::cout << "Total time in seconds: " << kernel_time_in_sec << std::endl;
+
+  //Starting test function
+  /*
+  std::string str;
+  std::string sq;
+  int a = 0;
+  int b = 0;
+  bool test = true;
+  for (unsigned int i = 0; i < DIM; i++)
+  {
+
+    for (int j = 0; j < stringdim[i]; j++)
+      str.push_back(string[b + j]);
+    for (int j = 0; j < seqdim[i]; j++)
+      sq.push_back(seq[a + j]);
+    
+        std::cout << std::endl;
+        std::cout << str << std::endl;
+        std::cout << sq << std::endl;
+        std::cout << vOcc[i];
+
+        std::cout << std::endl;
+
+
+    std::string v1 = std::string(str);
+    std::string v2 = std::string(sq);
+
+    test &= check(v1, v2, occ[i]);
+
+    //str.clear();
+    //sq.clear();
+    str = "";
+    sq = "";
+
+    a = a + seqdim[i];
+    b = b + stringdim[i];
+  }
+
+  if (test)
+    std::cout << "ALL RESULTS CORRECT" << std::endl;
+  else
+    std::cout << "TEST FAILED" << std::endl;
+    */
 }
