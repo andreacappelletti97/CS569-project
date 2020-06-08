@@ -347,8 +347,7 @@ int main(int argc, char **argv)
 
     double kernel_time_in_sec = 0;
 
-
-    while (string.size() > 0 )
+    while (string.size() > 0)
     {
         std::cout << "WHILE ENTER" << std::endl;
         std::vector<char, aligned_allocator<char>> stringDiv(maxstring);
@@ -383,9 +382,8 @@ int main(int argc, char **argv)
         int save_sequence_index_seq = 0;
         //For all the sequences
         for (size_t l = 0; l < seqdim.size(); l++)
-        { 
+        {
 
-            
             for (int i = 0; i < DIM; i++)
             {
                 occ[i] = -1;
@@ -395,7 +393,7 @@ int main(int argc, char **argv)
             std::vector<int, aligned_allocator<int>> currentSeqDim(DIM);
             std::vector<int, aligned_allocator<int>> pi(seqdim[l] * DIM + DIM);
             int sequence_index = 0;
-            
+
             save_sequence_index_seq = sequence_index_seq;
             //Fill the DIM couples for the comparisons
             for (size_t i = 0; i < DIM; i++)
@@ -416,10 +414,10 @@ int main(int argc, char **argv)
             std::cout << currentSeq.size() << std::endl;
             std::cout << "SEQ DIM" << std::endl;
             std::cout << currentSeqDim.size() << std::endl;
-            			for(int i = 0; i < currentSeq.size(); i++){
-			std::cout << i <<" "<<currentSeq[i]<< std::endl;	
-}
-
+            for (int i = 0; i < currentSeq.size(); i++)
+            {
+                std::cout << i << " " << currentSeq[i] << std::endl;
+            }
 
             failure_function(currentSeq, currentSeqDim, pi);
 
@@ -434,7 +432,7 @@ int main(int argc, char **argv)
                                            occ);
         }
 
-       string.erase(string.begin(), string.begin() + maxstring);
+        string.erase(string.begin(), string.begin() + maxstring);
         std::cout << "STRING DIM" << std::endl;
         std::cout << string.size() << std::endl;
     }

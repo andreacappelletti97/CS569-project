@@ -74,7 +74,7 @@ extern "C"
 		int n;
 		int k;
 
-//For all the couples
+		//For all the couples
 	kmp:
 		for (n = 0; n < DIM; n++)
 		{
@@ -87,7 +87,7 @@ extern "C"
 
 				if (j <= seqdim_local[n])
 				{
-						//Go on searching 
+					//Go on searching
 					if (i >= (stringdim_local[n] - seqdim_local[n]))
 					{
 
