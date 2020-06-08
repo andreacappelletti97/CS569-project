@@ -362,34 +362,38 @@ int main(int argc, char **argv)
     readFastaInput(string, stringdim, true);
     readFastaInput(seq, seqdim, false);
 
-    //Set dimension for 200 couples seq and string
-    int stringDIMK = 4939;
-    int seqDIMK = 35;
-    std::vector<int, aligned_allocator<int>> stringdimDiv;
-    std::vector<int, aligned_allocator<int>> seqdimDiv;
+   
+    while(string.size() > 0){
+    
+    std::vector<char, aligned_allocator<char>> stringDiv(maxstring);
+    std::vector<int, aligned_allocator<int>> stringdimDiv(DIM);
 
-    for (int i = 0; i < DIM; i++)
-    {
-        stringdimDiv.push_back(stringDIMK);
+    //Take the string from 0 to maxstring
+    for(size_t i = 0; i < maxstring; i++){
+        stringDiv[i] = string[i];
+    } //Set all the string dimension 
+    for(size_t m = 0; m < DIM; m++){
+        stringdimDiv[m] = maxstring/DIM;
+    }
+    //For all the sequences 
+    for(size_t l = 0; l < seqdim.size(); l++){
+        std::vector<char, aligned_allocator<char>> currentSeq(seqdim[l]);
+        for(size_t s = 0; s < seqdim[l]; s++){
+            currentSeq[s] = seq[s];
+        }
+        
+
     }
 
-    for (int i = 0; i < DIM; i++)
-    {
-        seqdimDiv.push_back(seqDIMK);
+
+     
+
     }
+   
 
-    int stringIndexLower = 0;
-    int stringIndexUpper = 4939 * DIM;
-    int seqIndexLower = 0;
-    int seqIndexUpper = 35 * DIM;
-
-    int countString = 0;
-    int countSeq = 0;
 
     double kernel_time_in_sec = 0;
 
-    for (int j = 0; j < 5; j++)
-    {
 
         //Set all occorences of the output vector to -1 index
         for (int i = 0; i < DIM; i++)
@@ -397,25 +401,11 @@ int main(int argc, char **argv)
             occ[i] = -1;
         }
 
-        std::cout << "FOR CICLE NUMBER: " << j << std::endl;
 
-        countString = 0;
-        countSeq = 0;
+       
+       
 
-        std::vector<char, aligned_allocator<char>> stringDiv(4939 * DIM);
-        std::vector<char, aligned_allocator<char>> seqDiv(35 * DIM);
-
-        for (size_t i = stringIndexLower; i < stringIndexUpper; i++)
-        {
-            stringDiv[countString] = string[i];
-            countString++;
-        }
-
-        for (size_t i = seqIndexLower; i < seqIndexUpper; i++)
-        {
-            seqDiv[countSeq] = seq[i];
-            countSeq++;
-        }
+     
 
         failure_function(seqDiv, seqdimDiv, pi);
 
@@ -429,11 +419,7 @@ int main(int argc, char **argv)
                                        pi,
                                        occ);
 
-        stringIndexLower = stringIndexUpper;
-        stringIndexUpper = stringIndexLower + 4939 * DIM;
-        seqIndexLower = seqIndexUpper;
-        seqIndexUpper = seqIndexLower + 35 * DIM;
-    }
+    
 
     std::cout << "Total time in seconds: " << kernel_time_in_sec << std::endl;
 
