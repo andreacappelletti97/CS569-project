@@ -12,8 +12,6 @@
 #define maxstring 1638400 //dimensione array string
 #define PI maxseq + DIM
 
-
-
 double run_krnl(cl::Context &context,
                 cl::CommandQueue &q,
                 cl::Kernel &kernel,
@@ -119,7 +117,6 @@ double run_krnl(cl::Context &context,
     return kernel_time.count();
 }
 
-
 //Function to compute the failure function of the KMP algorithm
 void failure_function(std::vector<char, aligned_allocator<char>> &seq, std::vector<int, aligned_allocator<int>> &seqdim, std::vector<int, aligned_allocator<int>> &pi)
 {
@@ -151,8 +148,6 @@ void failure_function(std::vector<char, aligned_allocator<char>> &seq, std::vect
     }
 }
 
-
-
 //Utility Function to print vector content
 void printVectorContent(std::vector<char, aligned_allocator<char>> &string)
 {
@@ -161,8 +156,6 @@ void printVectorContent(std::vector<char, aligned_allocator<char>> &string)
         std::cout << i << " " << string[i] << std::endl;
     }
 }
-
-
 
 //Function to read input seq and automatically set seq dimension for Repeat Analyzer
 void getPattern(std::vector<char, aligned_allocator<char>> &seq, std::vector<int, aligned_allocator<int>> &seqdim, bool pattern)
@@ -222,18 +215,17 @@ void getPattern(std::vector<char, aligned_allocator<char>> &seq, std::vector<int
     }
 }
 
-
 //Function to read fasta file format and automatically set dimension of seq and string
 void readFastaInput(std::vector<char, aligned_allocator<char>> &seq, std::vector<int, aligned_allocator<int>> &seqdim, bool isString)
 {
     std::ifstream input;
     if (isString)
     {
-        input.open("string.fasta");
+        input.open("string2.fasta");
     }
     else
     {
-        input.open("pattern.fasta");
+        input.open("pattern2.fasta");
     }
 
     std::string line, id, DNA_sequence;
@@ -291,8 +283,6 @@ void readFastaInput(std::vector<char, aligned_allocator<char>> &seq, std::vector
   */
 }
 
-
-
 int main(int argc, char **argv)
 {
     //Define the platform = devices + context + queues
@@ -344,85 +334,100 @@ int main(int argc, char **argv)
         exit(EXIT_FAILURE);
     }
 
-
     //Declare input vector
     std::vector<int, aligned_allocator<int>> occ(DIM);
     std::vector<int, aligned_allocator<int>> stringdim;
     std::vector<int, aligned_allocator<int>> seqdim;
     std::vector<char, aligned_allocator<char>> seq;
     std::vector<char, aligned_allocator<char>> string;
-    std::vector<int, aligned_allocator<int>> pi(7000 + DIM);
-
-   
-
-    //Read pattern to search into the string
-    //getPattern(seq, seqdim, true);
-    //getPattern(string, stringdim, false);
+    std::vector<int, aligned_allocator<int>> pi;
 
     readFastaInput(string, stringdim, true);
     readFastaInput(seq, seqdim, false);
 
-   
-    while(string.size() > 0){
-    
-    std::vector<char, aligned_allocator<char>> stringDiv(maxstring);
-    std::vector<int, aligned_allocator<int>> stringdimDiv(DIM);
-
-    //Take the string from 0 to maxstring
-    for(size_t i = 0; i < maxstring; i++){
-        stringDiv[i] = string[i];
-    } //Set all the string dimension 
-    for(size_t m = 0; m < DIM; m++){
-        stringdimDiv[m] = maxstring/DIM;
-    }
-    //For all the sequences 
-    for(size_t l = 0; l < seqdim.size(); l++){
-        std::vector<char, aligned_allocator<char>> currentSeq(seqdim[l]);
-        for(size_t s = 0; s < seqdim[l]; s++){
-            currentSeq[s] = seq[s];
-        }
-        
-
-    }
-
-
-     
-
-    }
-   
-
-
     double kernel_time_in_sec = 0;
 
 
-        //Set all occorences of the output vector to -1 index
-        for (int i = 0; i < DIM; i++)
+    while (string.size() > 0 )
+    {
+        std::cout << "WHILE ENTER" << std::endl;
+        std::vector<char, aligned_allocator<char>> stringDiv(maxstring);
+        std::vector<int, aligned_allocator<int>> stringdimDiv(DIM);
+
+        if (string.size() >= maxstring)
         {
-            occ[i] = -1;
+            std::cout << "MX STRING GREATER" << std::endl;
+            for (size_t i = 0; i < maxstring; i++)
+            {
+                stringDiv[i] = string[i];
+            }
+            //Set all the string dimension
+            for (size_t m = 0; m < DIM; m++)
+            {
+                stringdimDiv[m] = maxstring / DIM;
+            }
+        }
+        else
+        {
+            for (size_t i = 0; i < string.size(); i++)
+            {
+                stringDiv[i] = string[i];
+            }
+            stringdimDiv[0] = string.size();
         }
 
+        std::cout << "STRING SIZE " << stringDiv.size() << std::endl;
+        std::cout << "STRING DIM SIZE " << stringdimDiv.size() << std::endl;
 
-       
-       
+        //For all the sequences
+        for (size_t l = 0; l < seqdim.size(); l++)
+        {
+            //Set all occorences of the output vector to -1 index
+            for (int i = 0; i < DIM; i++)
+            {
+                occ[i] = -1;
+            }
 
-     
+            std::vector<char, aligned_allocator<char>> currentSeq(seqdim[l] * DIM);
+            std::vector<int, aligned_allocator<int>> currentSeqDim(DIM);
+            std::vector<int, aligned_allocator<int>> pi(seqdim[l] * DIM + DIM);
+            int sequence_index = 0;
+            int sequence_index_seq = 0;
+            //Fill the DIM couples for the comparisons
+            for (size_t i = 0; i < DIM; i++)
+            {
+                for (size_t s = sequence_index; s < sequence_index + seqdim[l]; s++)
+                {
 
-        failure_function(seqDiv, seqdimDiv, pi);
+                    currentSeq[s] = seq[sequence_index_seq++];
+                }
+                sequence_index += seqdim[l];
+                currentSeqDim[i] = seqdim[l];
+                sequence_index_seq = 0;
+            }
 
-        kernel_time_in_sec += run_krnl(context,
-                                       q,
-                                       kernel,
-                                       stringdimDiv,
-                                       seqdimDiv,
-                                       stringDiv,
-                                       seqDiv,
-                                       pi,
-                                       occ);
+            std::cout << "SEQ" << std::endl;
+            std::cout << currentSeq.size() << std::endl;
+            std::cout << "SEQ DIM" << std::endl;
+            std::cout << currentSeqDim.size() << std::endl;
 
-    
+            failure_function(currentSeq, currentSeqDim, pi);
+
+            kernel_time_in_sec += run_krnl(context,
+                                           q,
+                                           kernel,
+                                           stringdimDiv,
+                                           currentSeqDim,
+                                           stringDiv,
+                                           currentSeq,
+                                           pi,
+                                           occ);
+        }
+
+       string.erase(string.begin(), string.begin() + maxstring);
+        std::cout << "STRING DIM" << std::endl;
+        std::cout << string.size() << std::endl;
+    }
 
     std::cout << "Total time in seconds: " << kernel_time_in_sec << std::endl;
-
-
-    
 }
