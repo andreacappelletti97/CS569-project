@@ -379,6 +379,7 @@ int main(int argc, char **argv)
         std::cout << "STRING SIZE " << stringDiv.size() << std::endl;
         std::cout << "STRING DIM SIZE " << stringdimDiv.size() << std::endl;
 
+
         //For all the sequences
         for (size_t l = 0; l < seqdim.size(); l++)
         {
@@ -393,6 +394,7 @@ int main(int argc, char **argv)
             std::vector<int, aligned_allocator<int>> pi(seqdim[l] * DIM + DIM);
             int sequence_index = 0;
             int sequence_index_seq = 0;
+            
             //Fill the DIM couples for the comparisons
             for (size_t i = 0; i < DIM; i++)
             {
