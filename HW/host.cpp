@@ -379,11 +379,13 @@ int main(int argc, char **argv)
         std::cout << "STRING SIZE " << stringDiv.size() << std::endl;
         std::cout << "STRING DIM SIZE " << stringdimDiv.size() << std::endl;
 
-
+        int sequence_index_seq = 0;
+        int save_sequence_index_seq = 0;
         //For all the sequences
         for (size_t l = 0; l < seqdim.size(); l++)
-        {
-            //Set all occorences of the output vector to -1 index
+        { 
+
+            
             for (int i = 0; i < DIM; i++)
             {
                 occ[i] = -1;
@@ -393,8 +395,8 @@ int main(int argc, char **argv)
             std::vector<int, aligned_allocator<int>> currentSeqDim(DIM);
             std::vector<int, aligned_allocator<int>> pi(seqdim[l] * DIM + DIM);
             int sequence_index = 0;
-            int sequence_index_seq = 0;
             
+            save_sequence_index_seq = sequence_index_seq;
             //Fill the DIM couples for the comparisons
             for (size_t i = 0; i < DIM; i++)
             {
@@ -405,13 +407,19 @@ int main(int argc, char **argv)
                 }
                 sequence_index += seqdim[l];
                 currentSeqDim[i] = seqdim[l];
-                sequence_index_seq = 0;
+                sequence_index_seq = save_sequence_index_seq;
             }
+
+            sequence_index_seq = save_sequence_index_seq + seqdim[l];
 
             std::cout << "SEQ" << std::endl;
             std::cout << currentSeq.size() << std::endl;
             std::cout << "SEQ DIM" << std::endl;
             std::cout << currentSeqDim.size() << std::endl;
+            			for(int i = 0; i < currentSeq.size(); i++){
+			std::cout << i <<" "<<currentSeq[i]<< std::endl;	
+}
+
 
             failure_function(currentSeq, currentSeqDim, pi);
 
