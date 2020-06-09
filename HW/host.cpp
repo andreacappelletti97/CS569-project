@@ -125,7 +125,7 @@ void failure_function(std::vector<char, aligned_allocator<char>> &seq, std::vect
     int pi_count = 0;  //scorre pi
 
     //For each couple computer PI
-    for (int n = 0; n < DIM; n++)
+    for (int n = 0; n < 1; n++)
     {
         pi[pi_count] = -1;    //first element always equal to -1
         pi[pi_count + 1] = 0; //second element always equal to 0
@@ -221,11 +221,11 @@ void readFastaInput(std::vector<char, aligned_allocator<char>> &seq, std::vector
     std::ifstream input;
     if (isString)
     {
-        input.open("string2.fasta");
+        input.open("str.fasta");
     }
     else
     {
-        input.open("pattern2.fasta");
+        input.open("pat.fasta");
     }
 
     std::string line, id, DNA_sequence;
@@ -350,11 +350,12 @@ int main(int argc, char **argv)
     while (string.size() > 0)
     {
         std::cout << "WHILE ENTER" << std::endl;
-        std::vector<char, aligned_allocator<char>> stringDiv(maxstring);
-        std::vector<int, aligned_allocator<int>> stringdimDiv(DIM);
 
         if (string.size() >= maxstring)
         {
+            std::vector<char, aligned_allocator<char>> stringDiv(maxstring);
+            std::vector<int, aligned_allocator<int>> stringdimDiv(DIM);
+
             std::cout << "MX STRING GREATER" << std::endl;
             for (size_t i = 0; i < maxstring; i++)
             {
@@ -365,74 +366,109 @@ int main(int argc, char **argv)
             {
                 stringdimDiv[m] = maxstring / DIM;
             }
+
+            int sequence_index_seq = 0;
+            int save_sequence_index_seq = 0;
+            //For all the sequences
+            for (size_t l = 0; l < seqdim.size(); l++)
+            {
+
+                for (int i = 0; i < DIM; i++)
+                {
+                    occ[i] = -1;
+                }
+
+                std::vector<char, aligned_allocator<char>> currentSeq(seqdim[l] * DIM);
+                std::vector<int, aligned_allocator<int>> currentSeqDim(DIM);
+                std::vector<int, aligned_allocator<int>> pi(seqdim[l] * DIM + DIM);
+                int sequence_index = 0;
+
+                save_sequence_index_seq = sequence_index_seq;
+                //Fill the DIM couples for the comparisons
+                for (size_t i = 0; i < DIM; i++)
+                {
+                    for (size_t s = sequence_index; s < sequence_index + seqdim[l]; s++)
+                    {
+
+                        currentSeq[s] = seq[sequence_index_seq++];
+                    }
+                    sequence_index += seqdim[l];
+                    currentSeqDim[i] = seqdim[l];
+                    sequence_index_seq = save_sequence_index_seq;
+                }
+
+                sequence_index_seq = save_sequence_index_seq + seqdim[l];
+
+                failure_function(currentSeq, currentSeqDim, pi);
+
+                kernel_time_in_sec += run_krnl(context,
+                                               q,
+                                               kernel,
+                                               stringdimDiv,
+                                               currentSeqDim,
+                                               stringDiv,
+                                               currentSeq,
+                                               pi,
+                                               occ);
+            }
+
+            string.erase(string.begin(), string.begin() + maxstring);
         }
         else
         {
+
+            std::vector<char, aligned_allocator<char>> stringDiv(string.size());
+            std::vector<int, aligned_allocator<int>> stringdimDiv(1);
+
             for (size_t i = 0; i < string.size(); i++)
             {
                 stringDiv[i] = string[i];
             }
             stringdimDiv[0] = string.size();
-        }
 
-        std::cout << "STRING SIZE " << stringDiv.size() << std::endl;
-        std::cout << "STRING DIM SIZE " << stringdimDiv.size() << std::endl;
+            std::cout << "STRING SIZE " << stringDiv.size() << std::endl;
+            std::cout << "STRING DIM SIZE " << stringdimDiv.size() << std::endl;
 
-        int sequence_index_seq = 0;
-        int save_sequence_index_seq = 0;
-        //For all the sequences
-        for (size_t l = 0; l < seqdim.size(); l++)
-        {
+            int seq_index = 0;
 
-            for (int i = 0; i < DIM; i++)
+            for (size_t l = 0; l < seqdim.size(); l++)
             {
-                occ[i] = -1;
-            }
 
-            std::vector<char, aligned_allocator<char>> currentSeq(seqdim[l] * DIM);
-            std::vector<int, aligned_allocator<int>> currentSeqDim(DIM);
-            std::vector<int, aligned_allocator<int>> pi(seqdim[l] * DIM + DIM);
-            int sequence_index = 0;
-
-            save_sequence_index_seq = sequence_index_seq;
-            //Fill the DIM couples for the comparisons
-            for (size_t i = 0; i < DIM; i++)
-            {
-                for (size_t s = sequence_index; s < sequence_index + seqdim[l]; s++)
+                for (int i = 0; i < DIM; i++)
                 {
-
-                    currentSeq[s] = seq[sequence_index_seq++];
+                    occ[i] = -1;
                 }
-                sequence_index += seqdim[l];
-                currentSeqDim[i] = seqdim[l];
-                sequence_index_seq = save_sequence_index_seq;
+
+                std::vector<char, aligned_allocator<char>> currentSeq(seqdim[l]);
+                std::vector<int, aligned_allocator<int>> currentSeqDim(1);
+                std::vector<int, aligned_allocator<int>> pi(seqdim[l] + 1);
+
+                for (size_t i = 0; i < seqdim[l]; i++)
+                {
+                    currentSeq[i] = seq[seq_index++];
+                }
+                seq_index += seqdim[l];
+                currentSeqDim[0] = seqdim[l];
+
+                std::cout << "SEQ SIZE " << currentSeq.size() << std::endl;
+                std::cout << "SEQ DIM SIZE " << currentSeqDim.size() << std::endl;
+
+                string.erase(string.begin(), string.begin() + string.size());
+
+                failure_function(currentSeq, currentSeqDim, pi);
+
+                kernel_time_in_sec += run_krnl(context,
+                                               q,
+                                               kernel,
+                                               stringdimDiv,
+                                               currentSeqDim,
+                                               stringDiv,
+                                               currentSeq,
+                                               pi,
+                                               occ);
             }
-
-            sequence_index_seq = save_sequence_index_seq + seqdim[l];
-
-            std::cout << "SEQ" << std::endl;
-            std::cout << currentSeq.size() << std::endl;
-            std::cout << "SEQ DIM" << std::endl;
-            std::cout << currentSeqDim.size() << std::endl;
-            for (int i = 0; i < currentSeq.size(); i++)
-            {
-                std::cout << i << " " << currentSeq[i] << std::endl;
-            }
-
-            failure_function(currentSeq, currentSeqDim, pi);
-
-            kernel_time_in_sec += run_krnl(context,
-                                           q,
-                                           kernel,
-                                           stringdimDiv,
-                                           currentSeqDim,
-                                           stringDiv,
-                                           currentSeq,
-                                           pi,
-                                           occ);
         }
 
-        string.erase(string.begin(), string.begin() + maxstring);
         std::cout << "STRING DIM" << std::endl;
         std::cout << string.size() << std::endl;
     }
