@@ -87,7 +87,7 @@ extern "C"
 				if (j <= seqdim_local[n])
 				{
 
-					if (i >= (stringdim_local[n] - seqdim_local[n]))
+					if (i >= (stringdim_local[n]))
 					{
 
 						a = a + seqdim_local[n];
@@ -119,7 +119,7 @@ extern "C"
 					else
 					{
 
-						if (i >= (stringdim_local[n] - seqdim_local[n]))
+						if (i >= (stringdim_local[n]))
 						{
 
 							a = a + seqdim_local[n];
