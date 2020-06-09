@@ -74,7 +74,6 @@ extern "C"
 		int n;
 		int k;
 
-		//For all the couples
 	kmp:
 		for (n = 0; n < DIM; n++)
 		{
@@ -87,7 +86,7 @@ extern "C"
 
 				if (j <= seqdim_local[n])
 				{
-					//Go on searching
+
 					if (i >= (stringdim_local[n] - seqdim_local[n]))
 					{
 
@@ -165,10 +164,13 @@ extern "C"
 			occ[i] = occ_local[i];
 		}
 
+		/*
 		std::cout << "OCC FINAL" << std::endl;
 		for (int i = 0; i < DIM; i++)
 		{
 			std::cout << i << " " << occ_local[i] << std::endl;
 		}
+
+*/
 	}
 }

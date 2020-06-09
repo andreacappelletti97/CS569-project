@@ -216,16 +216,16 @@ void getPattern(std::vector<char, aligned_allocator<char>> &seq, std::vector<int
 }
 
 //Function to read fasta file format and automatically set dimension of seq and string
-void readFastaInput(std::vector<char, aligned_allocator<char>> &seq, std::vector<int, aligned_allocator<int>> &seqdim, bool isString)
+void readFastaInput(std::vector<char, aligned_allocator<char>> &seq, std::vector<int, aligned_allocator<int>> &seqdim, bool isString, std::vector<std::string, aligned_allocator<std::string>> &shortSeq)
 {
     std::ifstream input;
     if (isString)
     {
-        input.open("str.fasta");
+        input.open("string2.fasta");
     }
     else
     {
-        input.open("pat.fasta");
+        input.open("pattern.fasta");
     }
 
     std::string line, id, DNA_sequence;
@@ -255,6 +255,7 @@ void readFastaInput(std::vector<char, aligned_allocator<char>> &seq, std::vector
 
             //seqdim.push_back(DNA_sequence.size());
             id = line.substr(1);
+            shortSeq.push_back(id);
             DNA_sequence.clear();
         }
         else
@@ -342,21 +343,33 @@ int main(int argc, char **argv)
     std::vector<char, aligned_allocator<char>> string;
     std::vector<int, aligned_allocator<int>> pi;
 
-    readFastaInput(string, stringdim, true);
-    readFastaInput(seq, seqdim, false);
+    std::vector<std::string, aligned_allocator<std::string>> inputId;
+
+    std::vector<std::string, aligned_allocator<std::string>> shortSeq;
+
+    readFastaInput(string, stringdim, true, inputId);
+    readFastaInput(seq, seqdim, false, shortSeq);
+
+    shortSeq.pop_back();
+    shortSeq.pop_back();
+
+    std::vector<bool> seqFound(seqdim.size());
+
+    for (size_t i = 0; i < seqdim.size(); i++)
+    {
+        seqFound[i] = false;
+    }
 
     double kernel_time_in_sec = 0;
 
     while (string.size() > 0)
     {
-        std::cout << "WHILE ENTER" << std::endl;
 
         if (string.size() >= maxstring)
         {
             std::vector<char, aligned_allocator<char>> stringDiv(maxstring);
             std::vector<int, aligned_allocator<int>> stringdimDiv(DIM);
 
-            std::cout << "MX STRING GREATER" << std::endl;
             for (size_t i = 0; i < maxstring; i++)
             {
                 stringDiv[i] = string[i];
@@ -410,6 +423,14 @@ int main(int argc, char **argv)
                                                currentSeq,
                                                pi,
                                                occ);
+
+                for (size_t p = 0; p < DIM; p++)
+                {
+                    if (occ[p] != -1)
+                    {
+                        seqFound[l] = true;
+                    }
+                }
             }
 
             string.erase(string.begin(), string.begin() + maxstring);
@@ -417,8 +438,8 @@ int main(int argc, char **argv)
         else
         {
 
-            std::vector<char, aligned_allocator<char>> stringDiv(string.size());
-            std::vector<int, aligned_allocator<int>> stringdimDiv(1);
+            std::vector<char, aligned_allocator<char>> stringDiv(maxstring);
+            std::vector<int, aligned_allocator<int>> stringdimDiv(DIM);
 
             for (size_t i = 0; i < string.size(); i++)
             {
@@ -426,32 +447,29 @@ int main(int argc, char **argv)
             }
             stringdimDiv[0] = string.size();
 
-            std::cout << "STRING SIZE " << stringDiv.size() << std::endl;
-            std::cout << "STRING DIM SIZE " << stringdimDiv.size() << std::endl;
-
             int seq_index = 0;
 
             for (size_t l = 0; l < seqdim.size(); l++)
             {
-
                 for (int i = 0; i < DIM; i++)
                 {
                     occ[i] = -1;
                 }
 
-                std::vector<char, aligned_allocator<char>> currentSeq(seqdim[l]);
-                std::vector<int, aligned_allocator<int>> currentSeqDim(1);
-                std::vector<int, aligned_allocator<int>> pi(seqdim[l] + 1);
+                std::vector<char, aligned_allocator<char>> currentSeq(maxseq);
+                std::vector<int, aligned_allocator<int>> currentSeqDim(DIM);
+                std::vector<int, aligned_allocator<int>> pi(PI);
 
                 for (size_t i = 0; i < seqdim[l]; i++)
                 {
                     currentSeq[i] = seq[seq_index++];
                 }
-                seq_index += seqdim[l];
-                currentSeqDim[0] = seqdim[l];
 
-                std::cout << "SEQ SIZE " << currentSeq.size() << std::endl;
-                std::cout << "SEQ DIM SIZE " << currentSeqDim.size() << std::endl;
+                currentSeqDim[0] = seqdim[l];
+                for (int i = 0; i < 3; i++)
+                {
+                    std::cout << i << " " << stringDiv[i] << std::endl;
+                }
 
                 string.erase(string.begin(), string.begin() + string.size());
 
@@ -466,12 +484,27 @@ int main(int argc, char **argv)
                                                currentSeq,
                                                pi,
                                                occ);
+
+                for (size_t p = 0; p < DIM; p++)
+                {
+                    if (occ[p] != -1)
+                    {
+                        seqFound[l] = true;
+                    }
+                }
             }
         }
-
-        std::cout << "STRING DIM" << std::endl;
         std::cout << string.size() << std::endl;
     }
 
     std::cout << "Total time in seconds: " << kernel_time_in_sec << std::endl;
+    std::cout << "SEQUENCES FOUND" << std::endl;
+
+    for (size_t i = 0; i < seqdim.size(); i++)
+    {
+        if (seqFound[i] == true)
+        {
+            std::cout << "Sequence: " << shortSeq[i] << std::endl;
+        }
+    }
 }
