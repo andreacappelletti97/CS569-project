@@ -628,7 +628,7 @@ def computeShifts(pattern):
 	#print(end - start)	
 	#print(pattern)
 	print("SHIFT COMPUTED")
-	print(shifts)
+	#print(shifts)
 	return shifts
 ###### END		
 
