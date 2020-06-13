@@ -164,6 +164,7 @@ def matchProtein(species,input):
 	print(repeatList[len(repeatList) -1])
 	print("repreats list")
 	print(repeatList)
+	print(type(repeatList))
 	#process=multiprocessing.Process(target=popupWindow, args=("Amino Acid Match", res))
 	#process.daemon = True
 	#process.start()
