@@ -655,7 +655,9 @@ def KMP(protein, repeats):
         print("end of timer")
 	end = time.time()
 	print("timer total time")
-	print(end - start)
+	total_time = end - start
+	print(total_time)
+	
 	
 	#remove matches that are substrings of other matches
 	for start, index in output.iteritems():
@@ -694,7 +696,10 @@ def KMP(protein, repeats):
 	for item in sorted(outputreduced.items(),key=operator.itemgetter(0)):
 		result.append(repeats[item[1]].ID)
 
-	return result#,inexactresult
+	timer_time = 'Total time: ' + str(total_time)
+	result.append(timer_time)
+
+	return result
 
 def exportCSV(coords, names, file, species):
 	#open a file
