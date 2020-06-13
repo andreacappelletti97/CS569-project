@@ -147,21 +147,21 @@ def matchProtein(species,input):
 		protein=sanitize(i)
 
 		
-		os.system('./host source_kmp.xclbin')
+		#os.system('./host source_kmp.xclbin')
 		
-		#repeatList= KMP(protein,species.repeats) #returns the list of repeat IDS for a given protein sequence in order. 
-		#if repeatList == []:
-		#	res+= "No repeats found.\n"
-		#else:
-		#	res+=printresult(repeatList,species)+"\n"
+		repeatList= KMP(protein,species.repeats) #returns the list of repeat IDS for a given protein sequence in order. 
+		if repeatList == []:
+			res+= "No repeats found.\n"
+		else:
+			res+=printresult(repeatList,species)+"\n"
 		#res+="\nInexact matches:\n"
 		#for name,seq,error in inexact:
 		#	res+=name+", with "+error+" errors: "+seq
 			
 			
-	#print(res)	
+	print(res)	
 	print("TOTAL TIMER")
-	print(repeatList)
+	print(repeatList[len(repeatList) -1])
 	#process=multiprocessing.Process(target=popupWindow, args=("Amino Acid Match", res))
 	#process.daemon = True
 	#process.start()
@@ -178,7 +178,7 @@ def populatematchframe(window,species):
 #	proteinbutton=Button(matchbuttonframe,text="Protein",command=lambda:matchProtein(species,inputbox.get("1.0",END)))
 #	from Tkinter import Tk, Label, Frame, Text, Button, END
 	matchframe=Frame(window)
-	instructions=Label(matchframe, text="Enter the DNA or amino acid sequence below.")
+	instructions=Label(matchframe, text="Select which KMP implementation run")
 	instructions.pack()
 	matchframe.pack()
 	#inputbox=Text(matchframe)
@@ -188,16 +188,16 @@ def populatematchframe(window,species):
 	inputFileDNA = "./input/string.fasta"
 	DNAInput = open(inputFileDNA,'r')
 	DNAToSend = DNAInput.read()
-	DNAbutton=Button(matchbuttonframe,text="DNA",command=lambda:matchDNA(species,DNAToSend))
+	DNAbutton=Button(matchbuttonframe,text="FPGA",command=lambda:matchDNA(species,DNAToSend))
 	DNAbutton.pack(side="right")
 	inputFile = "./input/string.fasta"
 	proteinInput = open(inputFile,'r')
 	proteinToSend = proteinInput.read()
-	proteinbutton=Button(matchbuttonframe,text="Protein",command=lambda:matchProtein(species, proteinToSend))
+	proteinbutton=Button(matchbuttonframe,text="Repeat Analyzer",command=lambda:matchProtein(species, proteinToSend))
 	#proteinbutton=Button(matchbuttonframe,text="Protein",command=lambda:matchProtein(species,inputbox.get("1.0",END)))
 	proteinbutton.pack(side="left")
-	clearbutton=Button(matchframe,text="Clear",command=lambda:clearMatchData(inputbox))
-	clearbutton.pack()
+	#clearbutton=Button(matchframe,text="Clear",command=lambda:clearMatchData(inputbox))
+	#clearbutton.pack()
 
 	return matchframe
 	
@@ -216,7 +216,7 @@ def deployWindow(speciesList,currentspecies):
 		speciesmenu.add_command(label=species.name,command=lambda index=index: changeSpecies(window,speciesList,index,frameList) )
 	speciesmenu.add_separator()
 	speciesmenu.add_command(label="Cancel")
-	menubar.add_cascade(label="Select Species", menu=speciesmenu)
+	menubar.add_cascade(label="Select KMP", menu=speciesmenu)
 	
 	##populate the matching frame and display it
 	matchframe=populatematchframe(window,speciesList[currentspecies])
