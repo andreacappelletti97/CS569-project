@@ -1,6 +1,8 @@
 #!bash
 #Installation script
 
+#Clone the repo
+git clone https://github.com/andreacappelletti97/HPPS_project.git
 #Install cur
 sudo apt-get install curl
 
