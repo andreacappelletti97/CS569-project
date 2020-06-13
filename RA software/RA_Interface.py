@@ -160,7 +160,7 @@ def matchProtein(species,input):
 			
 			
 	print(res)	
-	print("TOTAL TIMER")
+	print("TOTAL TIME")
 	print(repeatList[len(repeatList) -1])
 	#process=multiprocessing.Process(target=popupWindow, args=("Amino Acid Match", res))
 	#process.daemon = True
@@ -168,6 +168,17 @@ def matchProtein(species,input):
 	#popupWindow("Amino Acid Match", res)
 	sys.exit()
 	return
+
+
+
+	#prints a protein match to window	
+def matchKmpFpga():
+	os.system('./host source_kmp.xclbin')
+		
+	
+	sys.exit()
+	return
+
 
 #clears data from the identification window
 def clearMatchData(inputbox):
@@ -188,7 +199,7 @@ def populatematchframe(window,species):
 	inputFileDNA = "./input/string.fasta"
 	DNAInput = open(inputFileDNA,'r')
 	DNAToSend = DNAInput.read()
-	DNAbutton=Button(matchbuttonframe,text="FPGA",command=lambda:matchDNA(species,DNAToSend))
+	DNAbutton=Button(matchbuttonframe,text="FPGA",command=lambda:matchKmpFpga())
 	DNAbutton.pack(side="right")
 	inputFile = "./input/string.fasta"
 	proteinInput = open(inputFile,'r')
