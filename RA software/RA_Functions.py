@@ -669,6 +669,12 @@ def KMP(protein, repeats):
 	result=[] #a sorted list of repeat IDs
 	for item in sorted(outputreduced.items(),key=operator.itemgetter(0)):
 		result.append(repeats[item[1]].ID)
+
+	timer_time = 'Total time: ' + str(total_time)
+	result.append(timer_time)
+
+	print("result")
+	print(result)
 	return result
 	output={} #a dictionary of exact repeats and their starts
 	#inexactresult=[]
