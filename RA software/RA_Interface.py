@@ -20,6 +20,7 @@
 
 from RA_Functions import *
 from Tkinter import *
+import sys
 
 
 #sets the window title to the appropriate data
@@ -123,7 +124,7 @@ def matchDNA(species,input):
 	#process.daemon = True
 	#process.start()
 	#popupWindow("DNA Match", res+"\n")
-
+	sys.exit()
 	return
 
 #prints a protein match to window	
@@ -159,7 +160,7 @@ def matchProtein(species,input):
 	#process.daemon = True
 	#process.start()
 	#popupWindow("Amino Acid Match", res)
-	
+	sys.exit()
 	return
 
 #clears data from the identification window
