@@ -673,8 +673,6 @@ def KMP(protein, repeats):
 	timer_time = 'Total time: ' + str(total_time)
 	result.append(timer_time)
 
-	print("result")
-	print(result)
 	return result
 	output={} #a dictionary of exact repeats and their starts
 	#inexactresult=[]
