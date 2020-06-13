@@ -410,7 +410,7 @@ def printresult(repeats,species,tabs=""):
 def readdatafromfile(file, species):
 	if "." not in file:
 		file+=".txt"
-	file = './input' + file
+	file = './input/' + file
 	print(file)
 	if os.path.isfile(file):
 		for numpass in range(1,3):
