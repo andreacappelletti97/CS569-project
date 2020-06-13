@@ -122,7 +122,7 @@ def matchDNA(species,input):
 	#process=multiprocessing.Process(target=popupWindow, args=("DNA Match", res+"\n"))
 	#process.daemon = True
 	#process.start()
-	popupWindow("DNA Match", res+"\n")
+	#popupWindow("DNA Match", res+"\n")
 
 	return
 
@@ -155,10 +155,10 @@ def matchProtein(species,input):
 			
 			
 	print(res)	
-	process=multiprocessing.Process(target=popupWindow, args=("Amino Acid Match", res))
-	process.daemon = True
-	process.start()
-	popupWindow("Amino Acid Match", res)
+	#process=multiprocessing.Process(target=popupWindow, args=("Amino Acid Match", res))
+	#process.daemon = True
+	#process.start()
+	#popupWindow("Amino Acid Match", res)
 	
 	return
 
