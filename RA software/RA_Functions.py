@@ -596,8 +596,8 @@ def createRepeatMatrix(species):
 # be used in a for-loop.  The naive match shown first requires the text
 # to be a list or string as well.
 def kmpAllMatches(pattern, text):
-	print("pattern: " + pattern)
-	print("text: " + text)
+	print("PATTERN: " + pattern)
+	#print("text: " + text)
 	shift = computeShifts(pattern)
 	startPos = 0
 	matchLen = 0
@@ -626,8 +626,8 @@ def computeShifts(pattern):
 	end = time.time()
 	#print("timer total time shiftssss")
 	#print(end - start)	
-	print(pattern)
-	print("shiftsSSSSS")
+	#print(pattern)
+	print("SHIFT COMPUTED")
 	print(shifts)
 	return shifts
 ###### END		
