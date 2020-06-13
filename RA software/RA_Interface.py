@@ -153,13 +153,14 @@ def matchProtein(species,input):
 		if repeatList == []:
 			res+= "No repeats found.\n"
 		else:
-			res+=printresult(repeatList,species)+"\n"
+			result_final = list(set(repeatList))
+			res+=printresult(result_final,species)+"\n"
 		#res+="\nInexact matches:\n"
 		#for name,seq,error in inexact:
 		#	res+=name+", with "+error+" errors: "+seq
 			
 			
-	#print(res)	
+	print(res)	
 	print("TOTAL TIME")
 	print(repeatList[len(repeatList) -1])
 	print("repreats list")
