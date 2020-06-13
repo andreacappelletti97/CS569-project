@@ -181,12 +181,12 @@ def populatematchframe(window,species):
 	inputbox.pack()
 	matchbuttonframe=Frame(matchframe)
 	matchbuttonframe.pack()
-	inputFileDNA = "proteine.txt"
+	inputFileDNA = "./input/string.fasta"
 	DNAInput = open(inputFileDNA,'r')
 	DNAToSend = DNAInput.read()
 	DNAbutton=Button(matchbuttonframe,text="DNA",command=lambda:matchDNA(species,DNAToSend))
 	DNAbutton.pack(side="right")
-	inputFile = "proteine.txt"
+	inputFile = "./input/string.fasta"
 	proteinInput = open(inputFile,'r')
 	proteinToSend = proteinInput.read()
 	proteinbutton=Button(matchbuttonframe,text="Protein",command=lambda:matchProtein(species, proteinToSend))
