@@ -696,10 +696,10 @@ def KMP(protein, repeats):
 	for item in sorted(outputreduced.items(),key=operator.itemgetter(0)):
 		result.append(repeats[item[1]].ID)
 
-	timer_time = 'Total time: ' + str(total_time)
-	result.append(timer_time)
+	#timer_time = 'Total time: ' + str(total_time)
+	#result.append(timer_time)
 
-	return result
+	return result, total_time
 
 def exportCSV(coords, names, file, species):
 	#open a file
