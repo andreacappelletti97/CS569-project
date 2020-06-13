@@ -21,6 +21,7 @@
 from RA_Functions import *
 from Tkinter import *
 import sys
+import os
 
 
 #sets the window title to the appropriate data
@@ -144,12 +145,15 @@ def matchProtein(species,input):
 		res+="Sequence "+str(c)+" :\n"
 		res+=name+"\n"+i+"\n"
 		protein=sanitize(i)
+
 		
-		repeatList= KMP(protein,species.repeats) #returns the list of repeat IDS for a given protein sequence in order. 
-		if repeatList == []:
-			res+= "No repeats found.\n"
-		else:
-			res+=printresult(repeatList,species)+"\n"
+		os.system('./host source_kmp.xclbin')
+		
+		#repeatList= KMP(protein,species.repeats) #returns the list of repeat IDS for a given protein sequence in order. 
+		#if repeatList == []:
+		#	res+= "No repeats found.\n"
+		#else:
+		#	res+=printresult(repeatList,species)+"\n"
 		#res+="\nInexact matches:\n"
 		#for name,seq,error in inexact:
 		#	res+=name+", with "+error+" errors: "+seq
