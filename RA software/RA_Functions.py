@@ -705,7 +705,7 @@ def KMP(protein, repeats):
 	result.append(timer_time)
 
 	print("result")
-	print(result)
+	#print(result)
 	return result
 
 def exportCSV(coords, names, file, species):

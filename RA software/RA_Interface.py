@@ -189,8 +189,8 @@ def populatematchframe(window,species):
 #	proteinbutton=Button(matchbuttonframe,text="Protein",command=lambda:matchProtein(species,inputbox.get("1.0",END)))
 #	from Tkinter import Tk, Label, Frame, Text, Button, END
 	matchframe=Frame(window)
-	instructions=Label(matchframe, text="Select which KMP implementation run")
-	instructions.pack()
+	#instructions=Label(matchframe, text="Select which KMP implementation run")
+	#instructions.pack()
 	matchframe.pack()
 	#inputbox=Text(matchframe)
 	#inputbox.pack()
