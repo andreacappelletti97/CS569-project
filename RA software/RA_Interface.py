@@ -159,7 +159,7 @@ def matchProtein(species,input):
 		#	res+=name+", with "+error+" errors: "+seq
 			
 			
-	print(res)	
+	#print(res)	
 	print("TOTAL TIMER")
 	print(repeatList)
 	#process=multiprocessing.Process(target=popupWindow, args=("Amino Acid Match", res))
@@ -181,8 +181,8 @@ def populatematchframe(window,species):
 	instructions=Label(matchframe, text="Enter the DNA or amino acid sequence below.")
 	instructions.pack()
 	matchframe.pack()
-	inputbox=Text(matchframe)
-	inputbox.pack()
+	#inputbox=Text(matchframe)
+	#inputbox.pack()
 	matchbuttonframe=Frame(matchframe)
 	matchbuttonframe.pack()
 	inputFileDNA = "./input/string.fasta"
