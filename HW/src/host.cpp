@@ -168,11 +168,11 @@ void getPattern(std::vector<char, aligned_allocator<char>> &seq, std::vector<int
     //Input file for sequences
     if (pattern)
     {
-        inputFile.open("pattern.txt");
+        inputFile.open("./input/pattern.txt");
     }
     else
     {
-        inputFile.open("proteine.txt");
+        inputFile.open("./input/string.txt");
     }
     while (getline(inputFile, line))
     {
@@ -221,11 +221,11 @@ void readFastaInput(std::vector<char, aligned_allocator<char>> &seq, std::vector
     std::ifstream input;
     if (isString)
     {
-        input.open("string2.fasta");
+        input.open("./input/string.fasta");
     }
     else
     {
-        input.open("pattern.fasta");
+        input.open("./input/pattern.fasta");
     }
 
     std::string line, id, DNA_sequence;
@@ -353,14 +353,16 @@ int main(int argc, char **argv)
     shortSeq.pop_back();
     shortSeq.pop_back();
 
+    
     std::vector<bool> seqFound(seqdim.size());
 
-    for (size_t i = 0; i < seqdim.size(); i++)
-    {
+    for(size_t i = 0; i < seqdim.size(); i++ ){
         seqFound[i] = false;
     }
+     
 
     double kernel_time_in_sec = 0;
+
 
     while (string.size() > 0)
     {
@@ -424,13 +426,13 @@ int main(int argc, char **argv)
                                                pi,
                                                occ);
 
-                for (size_t p = 0; p < DIM; p++)
-                {
-                    if (occ[p] != -1)
-                    {
-                        seqFound[l] = true;
-                    }
+            for(size_t p = 0; p < DIM; p++){
+                if(occ[p] != -1){
+                    seqFound[l] = true;
                 }
+            }
+
+
             }
 
             string.erase(string.begin(), string.begin() + maxstring);
@@ -485,26 +487,25 @@ int main(int argc, char **argv)
                                                pi,
                                                occ);
 
-                for (size_t p = 0; p < DIM; p++)
-                {
-                    if (occ[p] != -1)
-                    {
-                        seqFound[l] = true;
-                    }
+            for(size_t p = 0; p < DIM; p++){
+                if(occ[p] != -1){
+                    seqFound[l] = true;
                 }
+            }
             }
         }
         std::cout << string.size() << std::endl;
     }
 
     std::cout << "Total time in seconds: " << kernel_time_in_sec << std::endl;
-    std::cout << "SEQUENCES FOUND" << std::endl;
+     std::cout << "SEQUENCES FOUND" << std::endl;
 
-    for (size_t i = 0; i < seqdim.size(); i++)
-    {
-        if (seqFound[i] == true)
-        {
-            std::cout << "Sequence: " << shortSeq[i] << std::endl;
-        }
+for(size_t i = 0; i < seqdim.size(); i++){
+    if(seqFound[i] == true){
+        std::cout<<"Sequence: "<<shortSeq[i]<<std::endl;
     }
 }
+
+
+}
+

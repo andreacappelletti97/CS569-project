@@ -1,10 +1,10 @@
 #include <string>
 #include <vector>
 
-#define DIM 200			  //numero di coppie
-#define maxseq 204800	  //dimensione array seq
-#define maxstring 1638400 //dimensione array string
-#define PI maxseq + DIM
+#define DIM 200             //numero di coppie
+#define maxseq 204800        //dimensione array seq
+#define maxstring 1638400     //dimensione array string
+#define PI maxseq+DIM  
 
 #include <iostream>
 extern "C"
@@ -87,7 +87,7 @@ extern "C"
 				if (j <= seqdim_local[n])
 				{
 
-					if (i >= (stringdim_local[n]))
+					if (i >= (stringdim_local[n] ))
 					{
 
 						a = a + seqdim_local[n];
@@ -119,7 +119,7 @@ extern "C"
 					else
 					{
 
-						if (i >= (stringdim_local[n]))
+						if (i >= (stringdim_local[n] ))
 						{
 
 							a = a + seqdim_local[n];
@@ -164,7 +164,7 @@ extern "C"
 			occ[i] = occ_local[i];
 		}
 
-		/*
+/*
 		std::cout << "OCC FINAL" << std::endl;
 		for (int i = 0; i < DIM; i++)
 		{
@@ -172,5 +172,7 @@ extern "C"
 		}
 
 */
+
 	}
 }
+
